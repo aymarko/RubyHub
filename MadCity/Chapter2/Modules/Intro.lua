@@ -16,7 +16,7 @@ local songPath = "Audio/RubyHub_IntroSound.mp3"
 
 if not isfile(songPath) then
     local success, content = pcall(function()
-        return game:HttpGet('https://github.com/aymarko/MadCity-Related/raw/refs/heads/main/RubyHub_IntroSound.mp3')
+        return game:HttpGet('https://github.com/aymarko/RubyHub/raw/main/MadCity/Chapter2/Assets/IntroSound.mp3')
     end)
     
     if success then
