@@ -53,3 +53,7 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/aymarko/RubyHub/main/
 ## 💬 Community & Support
 
 [![Discord](https://img.shields.io/badge/Join-Discord-ff4da6?style=for-the-badge&logo=discord)](https://discord.gg/rubyhub)
+[![Website](https://img.shields.io/badge/Visit-Website-ff4da6?style=for-the-badge&logo=google-chrome)](https://rubyhub.net/)
+[![YouTube](https://img.shields.io/badge/Subscribe-YouTube-ff4da6?style=for-the-badge&logo=youtube)](https://www.youtube.com/@officialrubyhub)
+[![ScriptBlox](https://img.shields.io/badge/View-ScriptBlox-ff4da6?style=for-the-badge&logo=stripe)](https://scriptblox.com/u/rubyhub)
+[![Rscripts](https://img.shields.io/badge/View-Rscripts-ff4da6?style=for-the-badge&logo=rive)](https://rscripts.net/@RubyHub)
