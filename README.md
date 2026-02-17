@@ -1,4 +1,4 @@
-<img width="1920" height="1080" alt="Ruby Hub Banner" src="https://raw.githubusercontent.com/aymarko/RubyHubmain/MadCity/Chapter2/Assets/Banner.png" />
+<img width="1920" height="1080" alt="Ruby Hub Banner" src="https://raw.githubusercontent.com/aymarko/RubyHub/main/MadCity/Chapter2/Assets/Banner.png" />
 
 ---
 
