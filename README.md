@@ -40,7 +40,7 @@ Coming soon..
 
 Auto Arrest
 ```lua
-loadstring(game:HttpGet("https://raw.githubusercontent.com/devforroblox/rubyhubv2util/main/aav2"))()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/aymarko/RubyHub/main/MadCity/Chapter1/Autoarrest.lua"))()
 ```
 
 AutoRob
