@@ -1,6 +1,4 @@
---Just a UI for Skids :)
-
-_G.Text = "<font color=\"#BB1E77\">Ruby Hub V2 </font><b></b> is only available for <b><font color='#ffdb27'>Mad City: Chapter 2</font></b>"
+_G.Text = "<font color=\"#BB1E77\">Ruby Hub </font><b></b> is only available for <b><font color='#ffdb27'>Mad City: Chapter 2</font></b>"
 _G.Duration = 5
 
 local TweenService = game:GetService("TweenService")
