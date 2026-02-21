@@ -3,13 +3,9 @@ local TS = game:GetService("TweenService")
 
 _G.CustomNotify = function(messages)
     local old = p.PlayerGui:FindFirstChild("CD") if old then old:Destroy() end
-
     local gui = Instance.new("ScreenGui", p.PlayerGui) gui.Name = "CD" gui.ResetOnSpawn = false gui.DisplayOrder = 999
-
     local hud = Instance.new("Frame", gui) hud.BackgroundTransparency = 1 hud.Position = UDim2.new(0,0,1,0) hud.Size = UDim2.new(1,0,0,-200)
-
     local bg = Instance.new("ImageLabel", hud) bg.Image = "rbxassetid://2501618502" bg.ImageColor3 = Color3.new(0,0,0) bg.ImageTransparency = 1 bg.BackgroundTransparency = 1 bg.Size = UDim2.new(1,0,1,0) bg.Position = UDim2.new(0,0,0,0) bg.ScaleType = Enum.ScaleType.Stretch bg.Visible = false
-
     local lbl = Instance.new("TextLabel", bg) lbl.BackgroundTransparency = 1
     lbl.Position = UDim2.new(0.5,0,0.55,0)
     lbl.Size = UDim2.new(0.5,0,0.6,0)
@@ -26,7 +22,6 @@ _G.CustomNotify = function(messages)
     lbl.Text = ""
 
     local snd = Instance.new("Sound", gui) snd.SoundId = "rbxassetid://913399376" snd.Volume = 1 snd.Looped = true snd.PlaybackSpeed = 2
-
     local function tween(obj, props) TS:Create(obj, TweenInfo.new(0.4), props):Play() task.wait(0.4) end
 
     task.spawn(function()
