@@ -14,7 +14,16 @@ _G.CustomNotify = function(messages)
     lbl.Position = UDim2.new(0.5,0,0.55,0)
     lbl.Size = UDim2.new(0.5,0,0.6,0)
     lbl.AnchorPoint = Vector2.new(0.5,0.5)
-    lbl.Font = Enum.Font.SourceSansSemibold lbl.TextSize = 30 lbl.TextColor3 = Color3.new(1,1,1) lbl.TextStrokeColor3 = Color3.new(0,0,0) lbl.TextStrokeTransparency = 0.65 lbl.TextTransparency = 1 lbl.TextWrapped = true lbl.TextXAlignment = Enum.TextXAlignment.Center lbl.TextYAlignment = Enum.TextYAlignment.Center lbl.Text = ""
+    lbl.Font = Enum.Font.SourceSansSemibold
+    lbl.TextSize = 30
+    lbl.TextColor3 = Color3.new(1,1,1)
+    lbl.TextStrokeColor3 = Color3.new(0,0,0)
+    lbl.TextStrokeTransparency = 1
+    lbl.TextTransparency = 1
+    lbl.TextWrapped = true
+    lbl.TextXAlignment = Enum.TextXAlignment.Center
+    lbl.TextYAlignment = Enum.TextYAlignment.Center
+    lbl.Text = ""
 
     local snd = Instance.new("Sound", gui) snd.SoundId = "rbxassetid://913399376" snd.Volume = 1 snd.Looped = true snd.PlaybackSpeed = 2
 
@@ -26,7 +35,7 @@ _G.CustomNotify = function(messages)
             tween(bg, {ImageTransparency = 0})
             tween(lbl, {TextTransparency = 0, TextStrokeTransparency = 0.65})
             snd:Play()
-            for i = 1, #msg.Text do lbl.Text = string.sub(msg.Text,1,i) task.wait(0.03) end
+            for i = 1, #msg.Text do lbl.Text = string.sub(msg.Text,1,i) task.wait(0.015) end
             snd:Stop()
             task.wait(msg.Delay)
             tween(lbl, {TextTransparency = 1, TextStrokeTransparency = 1})
