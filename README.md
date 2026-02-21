@@ -45,7 +45,7 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/aymarko/RubyHub/refs/
 
 AutoRob
 ```lua
-_G.Serverhop = true
+_G.AutorobIn = "public" -- set to "private" to farm on your priv server
 loadstring(game:HttpGet("https://raw.githubusercontent.com/aymarko/RubyHub/main/MadCity/Chapter1/Autorob.lua"))()
 ```
 ---
