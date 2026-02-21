@@ -8,9 +8,13 @@ _G.CustomNotify = function(messages)
 
     local hud = Instance.new("Frame", gui) hud.BackgroundTransparency = 1 hud.Position = UDim2.new(0,0,1,0) hud.Size = UDim2.new(1,0,0,-200)
 
-    local bg = Instance.new("ImageLabel", hud) bg.Image = "rbxassetid://2501618502" bg.ImageColor3 = Color3.new(0,0,0) bg.ImageTransparency = 1 bg.BackgroundTransparency = 1 bg.Size = UDim2.new(1,0,1,0) bg.Visible = false
+    local bg = Instance.new("ImageLabel", hud) bg.Image = "rbxassetid://2501618502" bg.ImageColor3 = Color3.new(0,0,0) bg.ImageTransparency = 1 bg.BackgroundTransparency = 1 bg.Size = UDim2.new(1,0,1,0) bg.Position = UDim2.new(0,0,0,0) bg.ScaleType = Enum.ScaleType.Stretch bg.Visible = false
 
-    local lbl = Instance.new("TextLabel", bg) lbl.BackgroundTransparency = 1 lbl.Size = UDim2.new(1,0,1,0) lbl.Font = Enum.Font.SourceSansSemibold lbl.TextSize = 30 lbl.TextColor3 = Color3.new(1,1,1) lbl.TextStrokeColor3 = Color3.new(0,0,0) lbl.TextStrokeTransparency = 1 lbl.TextTransparency = 1 lbl.TextWrapped = true lbl.TextXAlignment = Enum.TextXAlignment.Center lbl.TextYAlignment = Enum.TextYAlignment.Center lbl.Text = ""
+    local lbl = Instance.new("TextLabel", bg) lbl.BackgroundTransparency = 1
+    lbl.Position = UDim2.new(0.5,0,0.55,0)
+    lbl.Size = UDim2.new(0.5,0,0.6,0)
+    lbl.AnchorPoint = Vector2.new(0.5,0.5)
+    lbl.Font = Enum.Font.SourceSansSemibold lbl.TextSize = 30 lbl.TextColor3 = Color3.new(1,1,1) lbl.TextStrokeColor3 = Color3.new(0,0,0) lbl.TextStrokeTransparency = 0.65 lbl.TextTransparency = 1 lbl.TextWrapped = true lbl.TextXAlignment = Enum.TextXAlignment.Center lbl.TextYAlignment = Enum.TextYAlignment.Center lbl.Text = ""
 
     local snd = Instance.new("Sound", gui) snd.SoundId = "rbxassetid://913399376" snd.Volume = 1 snd.Looped = true snd.PlaybackSpeed = 2
 
