@@ -1,83 +1,34 @@
-_G.Text = "<font color=\"#BB1E77\">Ruby Hub </font><b></b> is only available for <b><font color='#ffdb27'>Mad City: Chapter 2</font></b>"
-_G.Duration = 5
+local p = game:GetService("Players").LocalPlayer
+local TS = game:GetService("TweenService")
 
-local TweenService = game:GetService("TweenService")
-local Players = game:GetService("Players")
-local LocalPlayer = Players.LocalPlayer
-local PlayerGui = LocalPlayer:WaitForChild("PlayerGui")
+_G.CustomNotify = function(messages)
+    local old = p.PlayerGui:FindFirstChild("CD") if old then old:Destroy() end
 
-local MainUI = PlayerGui:FindFirstChild("MainUI")
-if not MainUI then
-    MainUI = Instance.new("ScreenGui")
-    MainUI.Name = "MainUI"
-    MainUI.Parent = PlayerGui
-    MainUI.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-end
+    local gui = Instance.new("ScreenGui", p.PlayerGui) gui.Name = "CD" gui.ResetOnSpawn = false gui.DisplayOrder = 999
 
-local originalBigAlert = MainUI:FindFirstChild("BigAlert")
-if originalBigAlert then
-    originalBigAlert.Visible = false
-end
+    local hud = Instance.new("Frame", gui) hud.BackgroundTransparency = 1 hud.Position = UDim2.new(0,0,1,0) hud.Size = UDim2.new(1,0,0,-200)
 
-local AutorobAlert = Instance.new("Frame")
-local UICorner = Instance.new("UICorner")
-local Message = Instance.new("TextLabel")
-local UICorner_2 = Instance.new("UICorner")
-local UIPadding = Instance.new("UIPadding")
+    local bg = Instance.new("ImageLabel", hud) bg.Image = "rbxassetid://2501618502" bg.ImageColor3 = Color3.new(0,0,0) bg.ImageTransparency = 1 bg.BackgroundTransparency = 1 bg.Size = UDim2.new(1,0,1,0) bg.Visible = false
 
-AutorobAlert.Name = "AutorobAlert"
-AutorobAlert.Parent = MainUI
-AutorobAlert.AnchorPoint = Vector2.new(0.5, 1)
-AutorobAlert.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-AutorobAlert.BackgroundTransparency = 1
-AutorobAlert.BorderSizePixel = 0
-AutorobAlert.Position = UDim2.new(0.5, 0, -0.1, 0)
-AutorobAlert.Size = UDim2.new(0.667, 0, 0.05, 0)
+    local lbl = Instance.new("TextLabel", bg) lbl.BackgroundTransparency = 1 lbl.Size = UDim2.new(1,0,1,0) lbl.Font = Enum.Font.SourceSansSemibold lbl.TextSize = 30 lbl.TextColor3 = Color3.new(1,1,1) lbl.TextStrokeColor3 = Color3.new(0,0,0) lbl.TextStrokeTransparency = 1 lbl.TextTransparency = 1 lbl.TextWrapped = true lbl.TextXAlignment = Enum.TextXAlignment.Center lbl.TextYAlignment = Enum.TextYAlignment.Center lbl.Text = ""
 
-UICorner.CornerRadius = UDim.new(0, 7)
-UICorner.Parent = AutorobAlert
+    local snd = Instance.new("Sound", gui) snd.SoundId = "rbxassetid://913399376" snd.Volume = 1 snd.Looped = true snd.PlaybackSpeed = 2
 
-Message.Name = "Message"
-Message.Parent = AutorobAlert
-Message.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-Message.BackgroundTransparency = 1
-Message.BorderSizePixel = 0
-Message.Size = UDim2.new(1, 0, 1, 0)
-Message.Font = Enum.Font.GothamBold
-Message.Text = _G.Text
-Message.TextColor3 = Color3.fromRGB(255, 255, 255)
-Message.TextScaled = true
-Message.TextStrokeTransparency = 0.7
-Message.TextWrapped = true
-Message.RichText = true
-Message.TextTransparency = 1
+    local function tween(obj, props) TS:Create(obj, TweenInfo.new(0.4), props):Play() task.wait(0.4) end
 
-UICorner_2.Parent = Message
-
-UIPadding.Parent = Message
-UIPadding.PaddingBottom = UDim.new(0, 5)
-UIPadding.PaddingLeft = UDim.new(0, 5)
-UIPadding.PaddingRight = UDim.new(0, 5)
-UIPadding.PaddingTop = UDim.new(0, 5)
-
-local alertSound = Instance.new("Sound")
-alertSound.SoundId = "rbxassetid://9120136603"
-alertSound.Volume = 0.5
-alertSound.Parent = game:GetService("SoundService")
-
-alertSound:Play()
-
-TweenService:Create(AutorobAlert, TweenInfo.new(0.6, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {Position = UDim2.new(0.5, 0, 0.15, 0)}):Play()
-TweenService:Create(Message, TweenInfo.new(0.6, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextTransparency = 0}):Play()
-
-task.wait(0.6 + _G.Duration)
-
-local fadeOut = TweenService:Create(Message, TweenInfo.new(0.5, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {TextTransparency = 1})
-fadeOut:Play()
-fadeOut.Completed:Wait()
-
-AutorobAlert:Destroy()
-
-if originalBigAlert then
-    originalBigAlert.Visible = true
+    task.spawn(function()
+        for _, msg in ipairs(messages) do
+            bg.Visible = true bg.ImageTransparency = 1 lbl.Text = "" lbl.TextTransparency = 1 lbl.TextStrokeTransparency = 1
+            tween(bg, {ImageTransparency = 0})
+            tween(lbl, {TextTransparency = 0, TextStrokeTransparency = 0.65})
+            snd:Play()
+            for i = 1, #msg.Text do lbl.Text = string.sub(msg.Text,1,i) task.wait(0.03) end
+            snd:Stop()
+            task.wait(msg.Delay)
+            tween(lbl, {TextTransparency = 1, TextStrokeTransparency = 1})
+            tween(bg, {ImageTransparency = 1})
+            bg.Visible = false task.wait(0.1)
+        end
+        gui:Destroy()
+    end)
 end
