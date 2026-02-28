@@ -2,10 +2,11 @@ local ModList = {
     -- Owner
     [59967] = "Owner", -- taymaster
 
+    -- Exploit Hunters
     [6395741] = "Exploit Hunter", -- COOL12JACK
     [855327900] = "Exploit Hunter", -- implexxa
 
-    -- Devs
+    -- Developers / former Developers
     [116481933] = "Friends", -- Rootie_DaHoodie
     [17897891] = "Friends", -- FamedChris
     [4426328480] = "Friends", -- AlreadyPrototype
@@ -19,6 +20,7 @@ local ModList = {
     --Administrator
     [94467335] = "Administrator", -- OmegaAnoobis
     [4276156092] = "Administrator", -- OmegaAnoobisAlt
+    [24243319] = "Administrator", -- AlreadyPro
 
     -- Moderators
     [966027914] = "Moderator", -- CraftiCookie
@@ -26,6 +28,7 @@ local ModList = {
     [70556831] = "Moderator", -- DarkAgeSky
     [10394523569] = "Moderator", -- Qualunos
     [4870521380] = "Moderator", -- jenjual
+    [28995792] = "Content Creator / Moderator", -- TacticalFrostyy
 
     -- Content Creators
     [1933300649] = "Content Creator", -- BornYeti
@@ -37,7 +40,6 @@ local ModList = {
     [870905642] = "Content Creator", -- Sushy647
     [132717362] = "Content Creator", -- ZDMD
     [983056393] = "Content Creator", -- TheRealConlord
-    [28995792] = "Content Creator", -- TacticalFrostyy
 
     -- QA Testers
     [721771859] = "QA Tester", -- ZeroBlueHawk
@@ -110,7 +112,6 @@ local ModList = {
     [68777399] = "Unknown", -- Toiebe
     [15180512] = "Unknown", -- JukeRblx
     [588504342] = "Unknown", -- CYBERE0N
-    [24243319] = "Unknown", -- AlreadyPro
     [165681568] = "Unknown", -- ONLYTW3NTYCH4RACT3R5
     [3640911903] = "Unknown", -- Getthepugoutofhere
     [9132118411] = "Unknown", -- ReefGirl89
