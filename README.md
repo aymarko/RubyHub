@@ -24,8 +24,8 @@ loadstring(game:HttpGet('https://raw.githubusercontent.com/aymarko/RubyHub/main/
 
 AutoRob
 ```lua
-_G.Serverhop = true
-_G.AntiLag = false
+getgenv().Serverhop = true
+getgenv().AntiLag = false
 loadstring(game:HttpGet('https://raw.githubusercontent.com/aymarko/RubyHub/main/MadCity/Chapter2/Autorob.lua'))()
 ```
 
@@ -40,7 +40,7 @@ Coming soon..
 
 Auto Arrest
 ```lua
-loadstring(game:HttpGet("https://raw.githubusercontent.com/aymarko/RubyHub/refs/heads/main/MadCity/Chapter1/Autoarrest.lua"))()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/aymarko/RubyHub/main/MadCity/Chapter1/Autoarrest.lua"))()
 ```
 
 AutoRob
