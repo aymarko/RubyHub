@@ -8,11 +8,11 @@ blur.Size = 0
 local ScreenGui = Instance.new("ScreenGui")
 ScreenGui.Parent = game.CoreGui
 
-if not isfolder("Audio") then
-    makefolder("Audio")
-end
+if not isfolder("RubyHub_Intro") then makefolder("RubyHub_Intro") end
+if not isfolder("RubyHub_Intro/Audio") then makefolder("RubyHub_Intro/Audio") end
+if not isfolder("RubyHub_Intro/Frames") then makefolder("RubyHub_Intro/Frames") end
 
-local songPath = "Audio/RubyHub_IntroSound.mp3"
+local songPath = "RubyHub_Intro/Audio/RubyHub_IntroSound.mp3"
 
 if not isfile(songPath) then
     local success, content = pcall(function()
@@ -74,13 +74,43 @@ local frames = {
     "116478020750977", "131418407879711", "137765009388246", "99597603973468"
 }
 
-local allFrameAssets = {}
-for i = 1, #frames do
-	table.insert(allFrameAssets, "rbxassetid://" .. frames[i])
+local BASE_URL = "https://raw.githubusercontent.com/aymarko/RubyHub/main/MadCity/Chapter2/Assets/Intro/"
+
+local cachedFrameAssets = table.create(#frames)
+local toDownload = {}
+
+for i, id in ipairs(frames) do
+    local fileName = "frame_" .. string.format("%03d", i) .. ".png"
+    local filePath = "RubyHub_Intro/Frames/" .. fileName
+    if isfile(filePath) then
+        cachedFrameAssets[i] = getcustomasset(filePath)
+    else
+        cachedFrameAssets[i] = "rbxassetid://" .. id
+        table.insert(toDownload, {index = i, id = id, path = filePath, url = BASE_URL .. fileName})
+    end
+end
+
+if #toDownload > 0 then
+    task.spawn(function()
+        for _, item in ipairs(toDownload) do
+            task.spawn(function()
+                local ok, data = pcall(function()
+                    return game:HttpGet(item.url)
+                end)
+                local isImage = ok and data and #data > 4 and (
+                    data:sub(1, 4) == "\137PNG" or
+                    data:sub(1, 2) == "\255\216"
+                )
+                if isImage then
+                    writefile(item.path, data)
+                end
+            end)
+        end
+    end)
 end
 
 local success, err = pcall(function()
-	ContentProvider:PreloadAsync(allFrameAssets)
+	ContentProvider:PreloadAsync(cachedFrameAssets)
 end)
 
 task.wait(0.5)
@@ -101,7 +131,7 @@ for i = 1, #frames do
 	frame.Rotation = 0
 	frame.Size = UDim2.new(0, 0, 0, 0)
 	frame.ImageTransparency = 0
-	frame.Image = "rbxassetid://" .. frames[i]
+	frame.Image = cachedFrameAssets[i]
 	frame.ZIndex = 1
 	UICorner.CornerRadius = UDim.new(0.1, 0)
 	UICorner.Parent = frame
