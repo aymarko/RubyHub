@@ -8,11 +8,12 @@ blur.Size = 0
 local ScreenGui = Instance.new("ScreenGui")
 ScreenGui.Parent = game.CoreGui
 
-if not isfolder("RubyHub_Intro") then makefolder("RubyHub_Intro") end
-if not isfolder("RubyHub_Intro/Audio") then makefolder("RubyHub_Intro/Audio") end
-if not isfolder("RubyHub_Intro/Frames") then makefolder("RubyHub_Intro/Frames") end
+if not isfolder("RubyHub") then makefolder("RubyHub") end
+if not isfolder("RubyHub/Intro") then makefolder("RubyHub/Intro") end
+if not isfolder("RubyHub/Intro/Audio") then makefolder("RubyHub/Intro/Audio") end
+if not isfolder("RubyHub/Intro/Frames") then makefolder("RubyHub/Intro/Frames") end
 
-local songPath = "RubyHub_Intro/Audio/RubyHub_IntroSound.mp3"
+local songPath = "RubyHub/Intro/Audio/RubyHub_IntroSound.mp3"
 
 if not isfile(songPath) then
     local success, content = pcall(function()
@@ -81,7 +82,7 @@ local toDownload = {}
 
 for i, id in ipairs(frames) do
     local fileName = "frame_" .. string.format("%03d", i) .. ".png"
-    local filePath = "RubyHub_Intro/Frames/" .. fileName
+    local filePath = "RubyHub/Intro/Frames/" .. fileName
     if isfile(filePath) then
         cachedFrameAssets[i] = getcustomasset(filePath)
     else
