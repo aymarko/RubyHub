@@ -1,6 +1,5 @@
 local TweenService = game:GetService("TweenService")
 local ContentProvider = game:GetService("ContentProvider")
-local RunService = game:GetService("RunService")
 
 local blur = Instance.new("BlurEffect", game.Lighting)
 blur.Size = 0
@@ -19,7 +18,6 @@ if not isfile(songPath) then
     local success, content = pcall(function()
         return game:HttpGet('https://github.com/aymarko/RubyHub/raw/main/MadCity/Chapter2/Assets/IntroSound.mp3')
     end)
-    
     if success then
         writefile(songPath, content)
     end
@@ -33,9 +31,6 @@ if isfile(songPath) then
     local audioAsset = getcustomasset(songPath)
     sound.SoundId = audioAsset
 end
-
-sound:Play()
-
 
 local frames = {
     "113616397450765", "113721642504853", "128535637484055", "83791463181225", "86204986669970",
@@ -93,7 +88,13 @@ end
 
 if #toDownload > 0 then
     task.spawn(function()
-        for _, item in ipairs(toDownload) do
+        local MAX_CONCURRENT = 4
+        local active = 0
+        local done = 0
+        local total = #toDownload
+
+        local function downloadNext(item)
+            active += 1
             task.spawn(function()
                 local ok, data = pcall(function()
                     return game:HttpGet(item.url)
@@ -104,11 +105,25 @@ if #toDownload > 0 then
                 )
                 if isImage then
                     writefile(item.path, data)
+                    cachedFrameAssets[item.index] = getcustomasset(item.path)
                 end
+                active -= 1
+                done += 1
             end)
+        end
+
+        local idx = 1
+        while done < total do
+            while active < MAX_CONCURRENT and idx <= total do
+                downloadNext(toDownload[idx])
+                idx += 1
+            end
+            task.wait(0.05)
         end
     end)
 end
+
+sound:Play()
 
 local success, err = pcall(function()
 	ContentProvider:PreloadAsync(cachedFrameAssets)
@@ -116,59 +131,52 @@ end)
 
 task.wait(0.5)
 
-local frame_data = {}
-local currentImageLabel = {
-	Size = UDim2.new(0, 0, 0, 0)
-}
+local videoFrame = Instance.new("Frame")
+videoFrame.Parent = ScreenGui
+videoFrame.BackgroundTransparency = 1
+videoFrame.Position = UDim2.new(0.5, 0, 0.5, 0)
+videoFrame.AnchorPoint = Vector2.new(0.5, 0.5)
+videoFrame.Size = UDim2.new(0, 0, 0, 0)
 
+local frame_data = table.create(#frames)
 for i = 1, #frames do
-	local frame = Instance.new("ImageLabel")
-	local UICorner = Instance.new("UICorner")
-	frame.Parent = ScreenGui
-	frame.BackgroundColor3 = Color3.new(1, 1, 1)
-	frame.BackgroundTransparency = 0
-	frame.Position = UDim2.new(0.5, 0, 0.5, 0)
-	frame.AnchorPoint = Vector2.new(0.5, 0.5)
-	frame.Rotation = 0
-	frame.Size = UDim2.new(0, 0, 0, 0)
-	frame.ImageTransparency = 0
-	frame.Image = cachedFrameAssets[i]
-	frame.ZIndex = 1
-	UICorner.CornerRadius = UDim.new(0.1, 0)
-	UICorner.Parent = frame
-	frame_data[i] = frame
-	frame.BackgroundTransparency = 1
-	frame.ImageTransparency = 1
+	local lbl = Instance.new("ImageLabel")
+	lbl.Parent = videoFrame
+	lbl.BackgroundTransparency = 1
+	lbl.Size = UDim2.new(1, 0, 1, 0)
+	lbl.Image = cachedFrameAssets[i]
+	lbl.ImageTransparency = 1
+	lbl.ZIndex = 1
+	local corner = Instance.new("UICorner")
+	corner.CornerRadius = UDim.new(0.1, 0)
+	corner.Parent = lbl
+	frame_data[i] = lbl
 end
 
-for i = 1, #frames do
-	if frame_data[i] then
-		frame_data[i].ImageTransparency = 0
-	end
+for i = 1, #frame_data do
+	frame_data[i].ImageTransparency = 0
 end
 task.wait(0.05)
-for i = 1, #frames do
-	if frame_data[i] then
-		frame_data[i].ImageTransparency = 1
-	end
+for i = 1, #frame_data do
+	frame_data[i].ImageTransparency = 1
 end
 task.wait(0.05)
 
-local heartbeatConnection
-heartbeatConnection = RunService.Heartbeat:Connect(function()
-	local targetSize = currentImageLabel.Size
-	for i = 1, #frame_data do
-		if frame_data[i] and frame_data[i].Size ~= targetSize then
-			frame_data[i].Size = targetSize
-		end
-	end
-end)
+local currentFrame = 1
+local activeLabel = nil
+
+local VIDEO_WIDTH = 303
+local VIDEO_HEIGHT = 263
+local VIDEO_HALF = VIDEO_HEIGHT / 2
+local BAR_WIDTH = VIDEO_WIDTH
+local BAR_HEIGHT = 7
+local BAR_BELOW_VIDEO = 22
 
 local LoadingBarContainer = Instance.new("Frame")
 LoadingBarContainer.Parent = ScreenGui
-LoadingBarContainer.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+LoadingBarContainer.BackgroundColor3 = Color3.fromRGB(48, 48, 48)
 LoadingBarContainer.BackgroundTransparency = 1
-LoadingBarContainer.Position = UDim2.new(0.5, 0, 0.5, (263 / 2) + 20)
+LoadingBarContainer.Position = UDim2.new(0.5, 0, 0.5, VIDEO_HALF + BAR_BELOW_VIDEO)
 LoadingBarContainer.Size = UDim2.new(0, 0, 0, 0)
 LoadingBarContainer.BorderSizePixel = 0
 LoadingBarContainer.AnchorPoint = Vector2.new(0.5, 0)
@@ -179,7 +187,7 @@ containerCorner.Parent = LoadingBarContainer
 
 local LoadingBar = Instance.new("Frame")
 LoadingBar.Parent = LoadingBarContainer
-LoadingBar.BackgroundColor3 = Color3.new(1, 1, 1)
+LoadingBar.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 LoadingBar.Size = UDim2.new(0, 0, 1, 0)
 LoadingBar.BorderSizePixel = 0
 
@@ -187,53 +195,19 @@ local barCorner = Instance.new("UICorner")
 barCorner.CornerRadius = UDim.new(1, 0)
 barCorner.Parent = LoadingBar
 
-local PercentageLabel = Instance.new("TextLabel")
-PercentageLabel.Parent = ScreenGui
-PercentageLabel.BackgroundTransparency = 1
-PercentageLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-PercentageLabel.Font = Enum.Font.GothamBlack
-PercentageLabel.TextSize = 16
-PercentageLabel.Position = UDim2.new(0.5, -150, 0.5, (263 / 2) + 32)
-PercentageLabel.Size = UDim2.new(0, 300, 0, 30)
-PercentageLabel.Text = "0%"
-PercentageLabel.TextTransparency = 1
-PercentageLabel.TextXAlignment = Enum.TextXAlignment.Center
-
-local InfoLabel = Instance.new("TextLabel")
-InfoLabel.Parent = ScreenGui
-InfoLabel.BackgroundTransparency = 1
-InfoLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-InfoLabel.Font = Enum.Font.GothamBlack
-InfoLabel.TextSize = 20
-InfoLabel.Position = UDim2.new(0.5, -150, 0.5, (263 / 2) + 50)
-InfoLabel.Size = UDim2.new(0, 300, 0, 50)
-InfoLabel.Text = ""
-InfoLabel.TextTransparency = 1
-InfoLabel.TextXAlignment = Enum.TextXAlignment.Center
-
-local logs = {
-	"Checking for updates...",
-	"Getting services...",
-	"Initializing modules..."
-}
-
 local frameUpdateRate = 0.025
 local maxFramesToShow = #frames - 10
 local totalFrameTime = maxFramesToShow * frameUpdateRate
 
 local frameAnimationComplete = false
-local currentFrame = 1
 
 task.spawn(function()
 	while currentFrame <= maxFramesToShow and ScreenGui.Parent do
-		for i = 1, #frames do
-			if frame_data[i] then
-				if i == currentFrame then
-					frame_data[i].ImageTransparency = 0
-				else
-					frame_data[i].ImageTransparency = 1
-				end
-			end
+		local lbl = frame_data[currentFrame]
+		if lbl then
+			if activeLabel then activeLabel.ImageTransparency = 1 end
+			lbl.ImageTransparency = 0
+			activeLabel = lbl
 		end
 		currentFrame = currentFrame + 1
 		task.wait(frameUpdateRate)
@@ -242,7 +216,7 @@ task.spawn(function()
 end)
 
 for i = 1, 15 do
-	currentImageLabel.Size = UDim2.new(0, 303 * (i / 15), 0, 263 * (i / 15))
+	videoFrame.Size = UDim2.new(0, VIDEO_WIDTH * (i / 15), 0, VIDEO_HEIGHT * (i / 15))
 	task.wait(0.02)
 end
 
@@ -252,114 +226,40 @@ for i = 1, 60, 3 do
 end
 
 for i = 1, 15 do
-	LoadingBarContainer.Size = UDim2.new(0, 300 * (i / 15), 0, 8 * (i / 15))
-	LoadingBarContainer.Position = UDim2.new(0.5, 0, 0.5, (263 / 2) + 20)
+	LoadingBarContainer.Size = UDim2.new(0, BAR_WIDTH * (i / 15), 0, BAR_HEIGHT * (i / 15))
+	LoadingBarContainer.Position = UDim2.new(0.5, 0, 0.5, VIDEO_HALF + BAR_BELOW_VIDEO)
 	task.wait(0.02)
 end
 
 for i = 1, 8 do
-	LoadingBarContainer.BackgroundTransparency = 1 - (0.7 * i / 8)
-	PercentageLabel.TextTransparency = 1 - (i / 8)
+	LoadingBarContainer.BackgroundTransparency = 1 - (0.55 * i / 8)
 	task.wait(0.015)
 end
 
-local totalSteps = #logs * 16
-local stepDuration = totalFrameTime / totalSteps
-
-for i, msg in ipairs(logs) do
-	InfoLabel.Text = msg
-	InfoLabel.TextTransparency = 1
-	
-	for j = 1, 8 do
-		InfoLabel.TextTransparency = InfoLabel.TextTransparency - 0.125
-		local progress = ((i - 1) * 16 + j) / totalSteps
-		
-		TweenService:Create(LoadingBar, TweenInfo.new(stepDuration, Enum.EasingStyle.Linear), {
-			Size = UDim2.new(progress, 0, 1, 0)
-		}):Play()
-		
-		local targetColor = Color3.fromRGB(250, 27, 117)
-		local startColor = Color3.new(1, 1, 1)
-		LoadingBar.BackgroundColor3 = startColor:Lerp(targetColor, progress)
-		
-		PercentageLabel.Text = math.floor(progress * 100) .. "%"
-		
-		task.wait(stepDuration)
-	end
-	
-	for k = 1, 8 do
-		local progress = ((i - 1) * 16 + 8 + k) / totalSteps
-		
-		TweenService:Create(LoadingBar, TweenInfo.new(stepDuration, Enum.EasingStyle.Linear), {
-			Size = UDim2.new(progress, 0, 1, 0)
-		}):Play()
-		
-		local targetColor = Color3.fromRGB(250, 27, 117)
-		local startColor = Color3.new(1, 1, 1)
-		LoadingBar.BackgroundColor3 = startColor:Lerp(targetColor, progress)
-		
-		PercentageLabel.Text = math.floor(progress * 100) .. "%"
-		task.wait(stepDuration)
-	end
-end
-
-TweenService:Create(LoadingBar, TweenInfo.new(0.1, Enum.EasingStyle.Sine, Enum.EasingDirection.Out), {
-	Size = UDim2.new(1, 0, 1, 0)
+TweenService:Create(LoadingBar, TweenInfo.new(totalFrameTime, Enum.EasingStyle.Linear), {
+	Size = UDim2.new(1, 0, 1, 0),
 }):Play()
-LoadingBar.BackgroundColor3 = Color3.fromRGB(250, 27, 117)
-PercentageLabel.Text = "100%"
-
-InfoLabel.Text = "Done!"
-InfoLabel.TextTransparency = 1
-
-for i = 1, 8 do
-	InfoLabel.TextTransparency = InfoLabel.TextTransparency - 0.125
-	task.wait(0.02)
-end
+task.wait(totalFrameTime)
 
 task.wait(1)
 
 for i = 1, 8 do
-	InfoLabel.TextTransparency = InfoLabel.TextTransparency + 0.125
 	LoadingBarContainer.BackgroundTransparency = LoadingBarContainer.BackgroundTransparency + 0.125
 	LoadingBar.BackgroundTransparency = i / 8
-	PercentageLabel.TextTransparency = PercentageLabel.TextTransparency + 0.125
 	task.wait(0.01)
 end
 
-InfoLabel:Destroy()
 LoadingBarContainer:Destroy()
-PercentageLabel:Destroy()
-
-heartbeatConnection:Disconnect()
-
-local visibleFrame = nil
-for i = 1, #frame_data do
-	if frame_data[i] and frame_data[i].ImageTransparency < 1 then
-		visibleFrame = frame_data[i]
-		break
-	end
-end
 
 local fadeSteps = 20
 for i = 1, fadeSteps do
 	local progress = i / fadeSteps
-	
-	if visibleFrame then
-		visibleFrame.ImageTransparency = progress
-	end
-	
+	if activeLabel then activeLabel.ImageTransparency = progress end
 	blur.Size = 60 * (1 - progress)
-	
 	task.wait(0.02)
 end
 
-for i = 1, #frame_data do
-	if frame_data[i] then
-		frame_data[i]:Destroy()
-	end
-end
-table.clear(frame_data)
+videoFrame:Destroy()
 
 task.wait(0.2)
 ScreenGui:Destroy()
