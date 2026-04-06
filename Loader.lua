@@ -23,6 +23,10 @@ elseif gameId == 91282350711571 then
     _G.AutorobIn = "public"
     loadstring(game:HttpGet("https://raw.githubusercontent.com/aymarko/RubyHub/main/MadCity/Chapter1/Autorob.lua"))()
 
+
+elseif gameId == 10930070681 then
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/aymarko/RubyHub/refs/heads/main/Zombie%20Tycoon/Zombie%20Tycoon.lua'))()
+
 else
     loadstring(game:HttpGet("https://raw.githubusercontent.com/aymarko/RubyHub/main/MadCity/Chapter2/Modules/Notify.lua", true))()
     task.wait(0.5)
