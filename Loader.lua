@@ -31,7 +31,7 @@ elseif gameId == 94753292168937 then
     loadstring(game:HttpGet('https://raw.githubusercontent.com/aymarko/RubyHub/refs/heads/main/Death%20Waves/Death%20Waves.lua'))()
 
 elseif gameId == 5775214331 then
-    loadstring(game:HttpGet('https://raw.githubusercontent.com/aymarko/RubyHub/refs/heads/main/Death%20Waves/Death%20Waves.lua'))()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/aymarko/RubyHub/refs/heads/main/Jail%20Tycoon/Jail%20Tycoon.lua'))()
 
 else
     loadstring(game:HttpGet("https://raw.githubusercontent.com/aymarko/RubyHub/main/MadCity/Chapter2/Modules/Notify.lua", true))()
