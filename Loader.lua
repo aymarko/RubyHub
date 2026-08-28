@@ -11,7 +11,7 @@
     Author: Ruby Hub
     Github: https://github.com/aymarko/RubyHub
     Website: https://rubyhub.net
-    Discord: https://discord.gg/rubyhub
+    Discord: https://discord.gg/AW7AfetxqZ
 ]]
 
 local gameId = game.PlaceId
