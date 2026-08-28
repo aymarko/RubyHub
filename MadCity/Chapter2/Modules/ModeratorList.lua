@@ -68,6 +68,7 @@ local ModList = {
     [373061764] = "QA Tester", -- Laci2800
     [1169232379] = "QA Tester", -- NoodleGamingTV
     [974223821] = "QA Tester", -- GHUZY
+    [1132152959] = "QA Tester", --Hello_GHuz
     [1084171270] = "QA Tester", -- puggy_gaming123
     [109225997] = "QA Tester", -- EndoExternal
     [885920088] = "QA Tester", -- Daijon_03
