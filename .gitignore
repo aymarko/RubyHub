@@ -1,0 +1,61 @@
+# Local build artifacts and dependency caches
+# Added to keep generated multi-GB output out of GitHub.
+[Bb]uild/
+[Bb]uild-*/
+[Dd]ist/
+[Oo]ut/
+[Bb]in/[Dd]ebug/
+[Bb]in/[Rr]elease/
+**/[Bb]in/[Dd]ebug/
+**/[Bb]in/[Rr]elease/
+[Oo]bj/
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+.vs/
+
+# JavaScript / web tooling
+node_modules/
+**/node_modules/
+.svelte-kit/
+**/.svelte-kit/
+.vite/
+**/.vite/
+.next/
+**/.next/
+.turbo/
+**/.turbo/
+coverage/
+**/coverage/
+
+# Rust / Tauri / CMake output
+target/
+**/target/
+cmake-build-*/
+CMakeFiles/
+CMakeCache.txt
+
+# Cloudflare / local tool caches
+.wrangler/
+**/.wrangler/
+.cache/
+**/.cache/
+.tmp/
+.tmp*/
+tmp/
+temp/
+
+# Python caches and virtual environments
+__pycache__/
+**/__pycache__/
+.pytest_cache/
+**/.pytest_cache/
+.venv/
+venv/
+
+# Logs and local secrets
+*.log
+.env
+.env.*
+!.env.example
